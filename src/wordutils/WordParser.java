@@ -50,7 +50,7 @@ public class WordParser implements Iterator<Word> {
             if (Character.isLetter(letter) || this.validWordChars.contains(letter)) {
                 word.append(letter);
             } else if (!word.isEmpty()) {
-                Word wordContext = new Word(word.toString(), lineNumber, i + 1 - word.length(), previousLine, startsSentence);
+                Word wordContext = new Word(word.toString(), lineNumber, i + 1 - word.length(), previousLine, currentLine, followingLine, startsSentence);
                 words.add(wordContext);
                 startsSentence = false;
                 word = new StringBuilder();
@@ -60,7 +60,7 @@ public class WordParser implements Iterator<Word> {
             }
         }
         if (!word.isEmpty()) {
-            Word wordContext = new Word(word.toString(), lineNumber, currentLine.length() + 1 - word.length(), previousLine, startsSentence);
+            Word wordContext = new Word(word.toString(), lineNumber, currentLine.length() + 1 - word.length(), previousLine, currentLine, followingLine, startsSentence);
             words.add(wordContext);
         }
         this.words = new LinkedList<>(words);

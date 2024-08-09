@@ -1,6 +1,9 @@
 import dictionaries.HashSetWordDictionary;
 import dictionaries.WordDictionary;
 import models.Word;
+import terminal.TerminalHelper;
+import wordutils.BKTreeFuzzyFinder;
+import wordutils.FuzzyFinder;
 import wordutils.WordChecker;
 import wordutils.WordParser;
 
@@ -44,19 +47,19 @@ public class Main {
                 }
         ));
 
-
-
         // SETUP DEPENDENCIES
         WordDictionary dictionary = new HashSetWordDictionary(dictFilePath);
         WordParser wordParser = new WordParser(new HashSet<>(validWordChars), new HashSet<>(sentenceTerminators));
         WordChecker wordChecker = new WordChecker(dictionary, skips, tryModify);
+        FuzzyFinder fuzzyFinder = new BKTreeFuzzyFinder();
 
         // CHECK THE TEXT FOR MISSPELLED WORDS
         wordParser.loadFile(textFilePath);
         while (wordParser.hasNext()) {
             Word word = wordParser.next();
             if (wordChecker.isMisspelled(word)) {
-                System.out.println(word.value);
+                ArrayList<String> suggestions = fuzzyFinder.fuzzyFind(word.value);
+                TerminalHelper.printMisspelledWord(word, suggestions);
             }
         }
     }
