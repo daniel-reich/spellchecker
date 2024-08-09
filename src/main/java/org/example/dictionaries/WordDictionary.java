@@ -1,4 +1,4 @@
-package dictionaries;
+package org.example.dictionaries;
 
 public interface WordDictionary {
  void load(String filepath);

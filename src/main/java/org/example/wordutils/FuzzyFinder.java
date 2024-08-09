@@ -1,4 +1,4 @@
-package wordutils;
+package org.example.wordutils;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,7 @@
-package terminal;
+package org.example.terminal;
 
-import models.Word;
+
+import org.example.models.Word;
 
 import java.util.ArrayList;
 

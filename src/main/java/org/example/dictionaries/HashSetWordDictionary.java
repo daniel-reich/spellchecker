@@ -1,4 +1,4 @@
-package dictionaries;
+package org.example.dictionaries;
 
 import java.io.File;
 import java.io.FileNotFoundException;

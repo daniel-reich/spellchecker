@@ -1,16 +1,23 @@
-import dictionaries.HashSetWordDictionary;
-import dictionaries.WordDictionary;
-import models.Word;
-import terminal.TerminalHelper;
-import wordutils.BKTreeFuzzyFinder;
-import wordutils.FuzzyFinder;
-import wordutils.WordChecker;
-import wordutils.WordParser;
+package org.example;
 
-import java.util.*;
+import org.example.dictionaries.HashSetWordDictionary;
+import org.example.dictionaries.WordDictionary;
+import org.example.models.Word;
+import org.example.terminal.TerminalHelper;
+import org.example.wordutils.BKTreeFuzzyFinder;
+import org.example.wordutils.FuzzyFinder;
+import org.example.wordutils.WordChecker;
+import org.example.wordutils.WordParser;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         String dictFilePath = args[0];

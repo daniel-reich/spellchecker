@@ -1,7 +1,9 @@
-package wordutils;
+package org.example.wordutils;
 
-import dictionaries.WordDictionary;
-import models.Word;
+
+
+import org.example.dictionaries.WordDictionary;
+import org.example.models.Word;
 
 import java.util.List;
 import java.util.function.Function;

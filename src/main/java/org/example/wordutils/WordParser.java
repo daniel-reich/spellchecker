@@ -1,6 +1,6 @@
-package wordutils;
+package org.example.wordutils;
 
-import models.Word;
+import org.example.models.Word;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
