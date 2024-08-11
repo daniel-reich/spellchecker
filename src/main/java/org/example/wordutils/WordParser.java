@@ -38,6 +38,8 @@ public class WordParser implements Iterator<Word> {
             this.convertCurrentLineToWords();
         } catch (IOException exception) {
             // TODO ERROR HANDLING
+            System.out.println(exception.getMessage());
+            System.exit(1);
         }
     }
 

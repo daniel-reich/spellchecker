@@ -35,7 +35,7 @@ public class WordChecker {
         for (Function<String, String> tryModifyFunc: this.tryModify) {
             String modifiedWord = tryModifyFunc.apply(word.value);
             if (!word.value.equals(modifiedWord)) {
-                isFound = this.dictionary.contains(modifiedWord);
+                isFound = this.dictionary.contains(modifiedWord.toLowerCase());
                 if (isFound) {
                     return false;
                 }

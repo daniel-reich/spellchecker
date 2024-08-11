@@ -4,10 +4,7 @@ import org.example.dictionaries.HashSetWordDictionary;
 import org.example.dictionaries.WordDictionary;
 import org.example.models.Word;
 import org.example.terminal.TerminalHelper;
-import org.example.wordutils.BKTreeFuzzyFinder;
-import org.example.wordutils.FuzzyFinder;
-import org.example.wordutils.WordChecker;
-import org.example.wordutils.WordParser;
+import org.example.wordutils.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +17,8 @@ import java.util.function.Predicate;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
         String dictFilePath = args[0];
         String textFilePath = args[1];
 
@@ -28,7 +27,7 @@ public class Main {
         // word will be marked as the beginning of sentence.
         Set<Character> sentenceTerminators = Set.of('.', '?', '!');
         // Any non alphabet chars will be considered a word separator, unless specified here
-        Set<Character> validWordChars = Set.of('\'');
+        Set<Character> validWordChars = Set.of('\'', '’');
 
         // Some words we might want to skip/ignore when checking spelling.
         // If a word matches one of the predicates in this list, the spell checker
@@ -47,7 +46,7 @@ public class Main {
                 // Try removing 's (make possessive words non-possessive)
                 (String s) -> {
                     int len = s.length();
-                    if (len > 2 && s.substring(len-2).equals("'s")) {
+                    if (len > 2 && (s.substring(len-2).equals("'s") || s.substring(len-2).equals("’s"))) {
                         return s.substring(0, len - 2);
                     }
                     return s;
@@ -55,10 +54,15 @@ public class Main {
         ));
 
         // SETUP DEPENDENCIES
-        WordDictionary dictionary = new HashSetWordDictionary(dictFilePath);
+        // TODO do we really need word dictionary interface
+        HashSetWordDictionary dictionary = new HashSetWordDictionary(dictFilePath);
         WordParser wordParser = new WordParser(new HashSet<>(validWordChars), new HashSet<>(sentenceTerminators));
         WordChecker wordChecker = new WordChecker(dictionary, skips, tryModify);
+        //FuzzyFinder fuzzyFinder = new SymSpellFuzzyFinder();
         FuzzyFinder fuzzyFinder = new BKTreeFuzzyFinder();
+        fuzzyFinder.loadDictionary(dictionary);
+        long loaded = System.currentTimeMillis();
+        System.out.println("\nLoaded dict in " + (double)(loaded - start) / 1000 + " seconds");
 
         // CHECK THE TEXT FOR MISSPELLED WORDS
         wordParser.loadFile(textFilePath);
@@ -69,5 +73,9 @@ public class Main {
                 TerminalHelper.printMisspelledWord(word, suggestions);
             }
         }
+        long finish = System.currentTimeMillis();
+        System.out.println("\nFinished in " + (double)(finish - start) / 1000 + " seconds");
     }
+
+
 }

@@ -7,7 +7,10 @@ import java.util.Scanner;
 
 public class HashSetWordDictionary implements WordDictionary {
 
-    private HashSet<String> dictionary;
+    // TODO SHOULD THis BE PUBLIC?
+    public HashSet<String> dictionary;
+
+    // TODO pass flepath in both?
     public HashSetWordDictionary(String filepath) {
         this.dictionary = new HashSet<>();
         this.load(filepath);

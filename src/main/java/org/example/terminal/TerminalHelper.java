@@ -24,6 +24,11 @@ public class TerminalHelper {
         if (word.followingLine != null) {
             System.out.println(GREEN + String.valueOf(word.lineNumber + 1) + RESET + "| " + word.followingLine);
         }
-        System.out.println(BLUE + "Did you mean " + BLUE_BOLD + String.join(", ", suggestions) + "?" + RESET);
+        if (suggestions.isEmpty()) {
+            System.out.println(BLUE + "No suggestions found :(" + RESET);
+        } else {
+            System.out.println(BLUE + "Did you mean " + BLUE_BOLD + String.join(", ", suggestions) + "?" + RESET);
+        }
+
     }
 }
