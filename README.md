@@ -29,5 +29,6 @@ When compared to the BK Tree, this SymSpell implementation takes longer to prepr
 
 ### Example output
 `java -cp target/spellchecker-1.0-SNAPSHOT.jar org.example.Main dictionary.txt moon_chatgpt.txt`
+
 <img width="992" alt="image" src="https://github.com/user-attachments/assets/27b169f9-d2e4-431b-be3e-3ab4bb59473e">
 
