@@ -1,6 +1,8 @@
 package org.example.models;
 
 public class Word {
+    // In java land I think its more typical that all of these properties would be private, with
+    // getters and setters? Not going to worry about it right now
     public String value;
     public String previousLine;
     public String currentLine;

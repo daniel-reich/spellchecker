@@ -7,17 +7,15 @@ import java.util.Scanner;
 
 public class HashSetWordDictionary implements WordDictionary {
 
-    // TODO SHOULD THis BE PUBLIC?
-    public HashSet<String> dictionary;
+    private HashSet<String> dictionary;
 
-    // TODO pass flepath in both?
     public HashSetWordDictionary(String filepath) {
-        this.dictionary = new HashSet<>();
         this.load(filepath);
     }
 
     @Override
     public void load(String filePath) {
+        this.dictionary = new HashSet<>();
         try {
             File myObj = new File(filePath);
             Scanner myReader = new Scanner(myObj);
@@ -27,13 +25,18 @@ public class HashSetWordDictionary implements WordDictionary {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println("Could not create a dictionary from " + filePath + ". File not found");
+            System.exit(1);
         }
     }
 
     @Override
     public boolean contains(String word) {
         return this.dictionary.contains(word);
+    }
+
+    @Override
+    public Iterable<String> allWords() {
+        return this.dictionary;
     }
 }

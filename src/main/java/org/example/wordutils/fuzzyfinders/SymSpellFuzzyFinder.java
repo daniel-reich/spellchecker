@@ -1,7 +1,7 @@
-package org.example.wordutils;
+package org.example.wordutils.fuzzyfinders;
 
-import org.example.dictionaries.HashSetWordDictionary;
 import org.example.dictionaries.WordDictionary;
+import org.example.wordutils.EditDistance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,14 @@ import java.util.stream.Collectors;
 
 public class SymSpellFuzzyFinder implements FuzzyFinder {
 
-    HashMap<String, ArrayList<String>> fuzzyFinder;
+    private HashMap<String, ArrayList<String>> fuzzyFinder;
+    private final int editDistance;
+
+    public SymSpellFuzzyFinder(WordDictionary dictionary, int editDistance) {
+        this.editDistance = editDistance;
+        this.loadDictionary(dictionary);
+    }
+
     public HashSet<String> deletedCharacterPermutations(String word, int deletions) {
         ArrayList<String> latestResults = this.deleteSingleCharacterPermutations(word);
         HashSet<String> permutations = new HashSet<String>(latestResults);
@@ -36,11 +43,10 @@ public class SymSpellFuzzyFinder implements FuzzyFinder {
         return permutations;
     }
 
-    public void loadDictionary(HashSetWordDictionary wordDictionary) {
+    private void loadDictionary(WordDictionary wordDictionary) {
         this.fuzzyFinder = new HashMap<String, ArrayList<String>>();
-        for (String word: wordDictionary.dictionary) {
-            // TODO parameterize the distance
-            for (String permutation: this.deletedCharacterPermutations(word, 2)) {
+        for (String word: wordDictionary.allWords()) {
+            for (String permutation: this.deletedCharacterPermutations(word, this.editDistance)) {
                 if (fuzzyFinder.containsKey(permutation)) {
                     fuzzyFinder.get(permutation).add(word);
                 } else {
@@ -55,14 +61,16 @@ public class SymSpellFuzzyFinder implements FuzzyFinder {
     @Override
     public ArrayList<String> fuzzyFind(String searchTerm) {
         ArrayList<String> suggestions = new ArrayList<>();
-        // TODO Parameterize this
-        HashSet<String> searchTerms = this.deletedCharacterPermutations(searchTerm, 2);
+        HashSet<String> searchTerms = this.deletedCharacterPermutations(searchTerm, this.editDistance);
         searchTerms.add(searchTerm);
         for (String permutation: searchTerms) {
             if (fuzzyFinder.containsKey(permutation)) {
+                //suggestions.addAll(fuzzyFinder.get(permutation).stream().filter(s -> EditDistance.levenshtein(searchTerm, s) <= this.editDistance).toList());
                 suggestions.addAll(fuzzyFinder.get(permutation));
             }
         }
         return suggestions;
     }
+
+
 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class WordParser implements Iterator<Word> {
+
     private int lineNumber;
     private int columnNumber;
     private String previousLine;
@@ -15,20 +16,24 @@ public class WordParser implements Iterator<Word> {
     private String followingLine;
     private BufferedReader reader;
     private Queue<Word> words;
-    private HashSet<Character> validWordChars;
-    private HashSet<Character> sentenceTerminators;
+    private final Set<Character> validWordChars;
+    private final Set<Character> sentenceTerminators;
 
     /**
      * Constructs a new {@code WordParser} to read a txt file and return each word
      * as a {@code Word} object.
      *
+     * @param filepath path to the .txt file that will be spellchecked
      * @param validWordChars set of non-letter chars that will be considered part of a word in addition to letters
+     * @param sentenceTerminators set of chars that will be considered the end of a sentence
      */
-    public WordParser(HashSet<Character> validWordChars, HashSet<Character> sentenceTerminators) {
+    public WordParser(String filepath, Set<Character> validWordChars, Set<Character> sentenceTerminators) {
         this.validWordChars = validWordChars;
         this.sentenceTerminators = sentenceTerminators;
+        this.loadFile(filepath);
     }
-    public void loadFile(String filepath) {
+
+    private void loadFile(String filepath) {
         try {
             this.reader = new BufferedReader(new FileReader(filepath));
             this.lineNumber = 1;
@@ -37,16 +42,16 @@ public class WordParser implements Iterator<Word> {
             this.followingLine = this.reader.readLine();
             this.convertCurrentLineToWords();
         } catch (IOException exception) {
-            // TODO ERROR HANDLING
-            System.out.println(exception.getMessage());
+            System.out.println("Error trying to read lines of file " + filepath);
             System.exit(1);
         }
     }
 
     private void convertCurrentLineToWords() {
-        StringBuilder word = new StringBuilder(); // TODO IS THIS HOW TO USE STRINGBUILDER?
+        StringBuilder word = new StringBuilder();
         ArrayList<Word> words = new ArrayList<>();
         boolean startsSentence = true;
+        // Look at each char in the line.
         for (int i = 0; i < currentLine.length(); i++) {
             char letter = currentLine.charAt(i);
             if (Character.isLetter(letter) || this.validWordChars.contains(letter)) {
@@ -102,6 +107,5 @@ public class WordParser implements Iterator<Word> {
             }
             return null;
         }
-
     }
 }
