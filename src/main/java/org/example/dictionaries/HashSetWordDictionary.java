@@ -21,7 +21,7 @@ public class HashSetWordDictionary implements WordDictionary {
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String word = myReader.nextLine();
-                dictionary.add(word);
+                dictionary.add(word.toLowerCase());
             }
             myReader.close();
         } catch (FileNotFoundException e) {

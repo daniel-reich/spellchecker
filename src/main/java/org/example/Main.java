@@ -4,7 +4,9 @@ import org.example.dictionaries.HashSetWordDictionary;
 import org.example.dictionaries.WordDictionary;
 import org.example.models.Word;
 import org.example.terminal.TerminalHelper;
-import org.example.wordutils.*;
+import org.example.wordutils.EditDistanceFunctions;
+import org.example.wordutils.WordChecker;
+import org.example.wordutils.WordParser;
 import org.example.wordutils.fuzzyfinders.BKTreeFuzzyFinder;
 import org.example.wordutils.fuzzyfinders.FuzzyFinder;
 import org.example.wordutils.fuzzyfinders.SymSpellFuzzyFinder;
@@ -77,18 +79,18 @@ public class Main {
 
 
         // SETUP DEPENDENCIES
-        // Holds set of dictionary words
+        // WordDictionary holds set of dictionary words
         WordDictionary dictionary = new HashSetWordDictionary(dictFilePath);
 
-        // Parse txt file into individual words
+        // WordParser converts txt file into individual words
         WordParser wordParser = new WordParser(textFilePath, validWordChars, sentenceTerminators);
 
-        // Checks if word is in dictionary while considering exceptions, unique cases, etc.
+        // WordChecker checks if word is in dictionary while considering exceptions, unique cases, etc.
         WordChecker wordChecker = new WordChecker(dictionary, skips, tryModify);
 
-        // Find suggestions for misspelled words
-        FuzzyFinder fuzzyFinder = new SymSpellFuzzyFinder(dictionary, editDistance);
-        //FuzzyFinder fuzzyFinder = new BKTreeFuzzyFinder(dictionary, EditDistance::levenshtein, editDistance); // Suggestions for words not found in dictionary
+        // FuzzyFinder suggests replacements for misspelled words
+        //FuzzyFinder fuzzyFinder = new SymSpellFuzzyFinder(dictionary, editDistance);
+        FuzzyFinder fuzzyFinder = new BKTreeFuzzyFinder(dictionary, EditDistanceFunctions::levenshtein, editDistance); // Suggestions for words not found in dictionary
 
 
         // CHECK THE TEXT FOR MISSPELLED WORDS

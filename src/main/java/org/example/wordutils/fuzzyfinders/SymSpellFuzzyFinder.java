@@ -1,7 +1,7 @@
 package org.example.wordutils.fuzzyfinders;
 
 import org.example.dictionaries.WordDictionary;
-import org.example.wordutils.EditDistance;
+import org.example.wordutils.EditDistanceFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,16 +60,16 @@ public class SymSpellFuzzyFinder implements FuzzyFinder {
 
     @Override
     public ArrayList<String> fuzzyFind(String searchTerm) {
-        ArrayList<String> suggestions = new ArrayList<>();
+        HashSet<String> suggestions = new HashSet<>();
         HashSet<String> searchTerms = this.deletedCharacterPermutations(searchTerm, this.editDistance);
         searchTerms.add(searchTerm);
         for (String permutation: searchTerms) {
             if (fuzzyFinder.containsKey(permutation)) {
-                //suggestions.addAll(fuzzyFinder.get(permutation).stream().filter(s -> EditDistance.levenshtein(searchTerm, s) <= this.editDistance).toList());
-                suggestions.addAll(fuzzyFinder.get(permutation));
+                suggestions.addAll(fuzzyFinder.get(permutation).stream().filter(s -> EditDistanceFunctions.levenshtein(searchTerm, s) <= this.editDistance).toList());
+                //suggestions.addAll(fuzzyFinder.get(permutation));
             }
         }
-        return suggestions;
+        return new ArrayList<>(suggestions);
     }
 
 

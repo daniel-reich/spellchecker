@@ -30,3 +30,6 @@ bin/
 
 ### intellig
 .idea
+
+### Maven
+target/
